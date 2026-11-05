@@ -64,7 +64,36 @@
       <button type="button" id="btn-compose-register">この回答を台帳に登録する</button>
     </div>
   </div>
-  <!--LLM-->
+  <div class="card" id="llm-card">
+    <h3>AIによる下書き候補（ローカルLLM）</h3>
+    <p class="help">Ollama につながっているときだけ使えます。材料は上の「原文の該当箇所」で選んだ原文だけです。下書きは候補です。原文と照らして直し、職員が確定してください。AIにつながらなくても、ほかの機能はすべて使えます。</p>
+    <p id="llm-material-info" class="count"></p>
+    <div class="btn-row">
+      <button type="button" id="btn-llm-run">下書き候補を作る</button>
+      <button type="button" id="btn-llm-cancel" hidden>中止</button>
+    </div>
+    <p id="llm-status" class="result" aria-live="polite"></p>
+    <div id="llm-output" hidden>
+      <div class="compose-grid">
+        <div>
+          <h4 class="col-title">下書き（候補）</h4>
+          <label>直せます<textarea id="llm-draft" rows="8" autocomplete="off"></textarea></label>
+          <p><span id="llm-terms-head"></span></p>
+          <ul id="llm-terms" class="term-list"></ul>
+          <p class="help">印を付けた表示（材料の原文にない語句に印）：</p>
+          <div id="llm-draft-view" class="draft-view"></div>
+          <div class="btn-row" style="margin-top:8px">
+            <button type="button" id="btn-llm-adopt" class="btn-primary">回答欄に採用</button>
+            <button type="button" id="btn-llm-discard">下書きを破棄</button>
+          </div>
+        </div>
+        <div>
+          <h4 class="col-title">材料にした原文</h4>
+          <div id="llm-materials"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 
@@ -150,7 +179,32 @@
 <section class="panel" id="panel-data" role="tabpanel" aria-labelledby="tab-data" hidden>
   <h2>設定・データ</h2>
   <p id="data-summary" class="count"></p>
-  <!--SETTINGS-->
+  <form id="ai-settings" class="card" autocomplete="off" onsubmit="return false">
+    <h3>AIの接続（下書き候補を作るときだけ使います）</h3>
+    <p class="help">既定は、このPCの中で動く Ollama です。問い合わせの内容と原文はこのPCの外に出ません。外部のAPIは、使うと決めたときだけ選んでください。</p>
+    <label>接続先<select id="ai-provider">
+      <option value="ollama">Ollama（このPCの中で動くAI）</option>
+      <option value="external">外部のAPI（OpenAI互換。問い合わせの内容と原文が外部に送られます）</option>
+      <option value="none">AIを使わない</option>
+    </select></label>
+    <div id="ai-ollama-fields">
+      <div class="grid-2">
+        <label>Ollama の場所<input id="ai-ollama-url" value="http://localhost:11434"></label>
+        <label>モデル名（空欄なら入っているモデルの最初のもの）<input id="ai-ollama-model" list="dl-ollama-models" placeholder="例：gemma3:4b"></label>
+      </div>
+      <datalist id="dl-ollama-models"></datalist>
+    </div>
+    <div id="ai-ext-fields" hidden>
+      <p class="warn-box" style="margin:0 0 10px">外部のAPIを使うと、問い合わせの内容と材料の原文が、そのAPIの提供者に送られます。費用がかかることがあります。組織の決まりで認められている場合だけ使ってください。</p>
+      <div class="grid-2">
+        <label>接続先（例：https://api.example.com/v1）<input id="ai-ext-url" inputmode="url"></label>
+        <label>モデル名<input id="ai-ext-model"></label>
+      </div>
+      <label>APIの鍵（保存しません。画面を閉じると消えます）<input id="ai-ext-key" type="password" autocomplete="off"></label>
+    </div>
+    <div class="btn-row"><button type="button" id="btn-ai-check">接続を確かめる</button></div>
+    <p id="ai-check-result" class="result" aria-live="polite"></p>
+  </form>
   <div class="card">
     <h3>書き出し</h3>
     <p class="help">控えや、他の職員・他のPCへの受け渡しに使います。CSVはExcelでそのまま開けます。</p>
@@ -191,6 +245,7 @@
 <script src="js/docs.js?v=20261105-1"></script>
 <script src="js/analysis.js?v=20261105-1"></script>
 <script src="js/compose.js?v=20261105-1"></script>
+<script src="js/llm.js?v=20261105-1"></script>
 <script src="js/ledger.js?v=20261105-1"></script>
 <script src="js/io.js?v=20261105-1"></script>
 <script src="js/app.js?v=20261105-1"></script>
