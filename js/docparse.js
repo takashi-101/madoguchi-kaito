@@ -11,7 +11,7 @@
   var RE_SECTION = new RegExp('^第' + NUM + '[節款](?:\\s|　|$|[^0-9０-９条])');
   var RE_ARTICLE = new RegExp('^(第' + NUM + '条(?:の' + NUM + ')?)(?:[\\s　]*[（(]([^）)]{1,30})[）)])?');
   var RE_CAPTION = /^[（(]([^）)]{1,30})[）)]$/;
-  var RE_SUPPL = /^附[\s　]*則/;
+  var RE_SUPPL = /^(?:附[\s　]*則|別表|別記)/;
   var RE_MD = /^(#{1,6})\s+(.+)$/;
   var RE_BRACKET = /^【([^】]{1,30})】$/;
   var RE_NUMHEAD = /^([0-9０-９]{1,2}(?:[-－.．][0-9０-９]{1,2})*)[.．、\s　]\s*(\S.{0,28})$/;
@@ -83,7 +83,7 @@
         blocks.push({ p: page, h: headingPath(), t: m[2].trim(), head: 1 });
         return;
       }
-      if (RE_PART.test(text) || RE_SUPPL.test(text)) {
+      if (RE_PART.test(text) || (RE_SUPPL.test(text) && text.length <= 24 && !/。/.test(text))) {
         flush();
         setHead(0, text, page);
         blocks.push({ p: page, h: headingPath(), t: text, head: 1 });
