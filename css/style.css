@@ -150,9 +150,10 @@ mark.term-missing { background: var(--flag-term-bg); color: var(--text); text-de
 .notice {
   position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%) translateY(150%);
   max-width: min(92vw, 640px); background: var(--text); color: var(--bg); padding: 10px 16px;
-  border-radius: var(--radius); transition: transform .2s; z-index: 50; font-size: .95rem;
+  border-radius: var(--radius); transition: transform .2s, visibility .2s; z-index: 50; font-size: .95rem;
+  visibility: hidden;
 }
-.notice.show { transform: translateX(-50%) translateY(0); }
+.notice.show { transform: translateX(-50%) translateY(0); visibility: visible; }
 .notice.error { background: var(--danger); color: #fff; }
 
 /* 文書の取り込みと検索 */
@@ -188,6 +189,18 @@ details summary { cursor: pointer; }
 
 /* 印刷 */
 #print-area { display: none; }
+.sheet { background: #fff; color: #111; border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; overflow-x: auto; }
+.sheet h1 { font-size: 1.35rem; margin: 0 0 4px; }
+.sheet h2 { font-size: 1.1rem; margin: 16px 0 6px; padding-bottom: 2px; border-bottom: 2px solid #333; }
+.sheet h3 { font-size: 1rem; margin: 10px 0 4px; }
+.sheet p { margin: 2px 0; }
+.sheet-note { font-size: .85rem; color: #444; }
+.sheet-toc ol { margin: 4px 0 0; padding-left: 1.6em; }
+.sheet-flag { font-size: .82rem; color: #8f1b1b; margin-left: 8px; font-weight: normal; }
+.sheet table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+.sheet th, .sheet td { border: 1px solid #999; padding: 3px 7px; vertical-align: top; text-align: left; }
+.sheet th { width: 7.5em; background: #f0f0f0; font-weight: normal; white-space: nowrap; }
+.sheet-entry { margin-bottom: 8px; }
 
 @media (max-width: 900px) {
   .compose-grid { grid-template-columns: 1fr; }
@@ -205,5 +218,8 @@ details summary { cursor: pointer; }
   @page { size: A4; margin: 15mm 14mm; }
   body { background: #fff; color: #000; font-size: 10.5pt; line-height: 1.6; }
   body.printing > *:not(#print-area) { display: none !important; }
-  body.printing #print-area { display: block; }
+  body.printing #print-area { display: block; border: none; padding: 0; border-radius: 0; }
+  .sheet-entry { break-inside: avoid; page-break-inside: avoid; }
+  .sheet h2, .sheet h3 { break-after: avoid; page-break-after: avoid; }
+  .sheet th { background: #eee; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
