@@ -18,6 +18,7 @@
   <button type="button" class="tab" role="tab" data-tab="compose" id="tab-compose" aria-controls="panel-compose">回答の作成</button>
   <button type="button" class="tab" role="tab" data-tab="ledger" id="tab-ledger" aria-controls="panel-ledger">標準回答台帳</button>
   <button type="button" class="tab" role="tab" data-tab="docs" id="tab-docs" aria-controls="panel-docs">マニュアル・例規の検索</button>
+  <button type="button" class="tab" role="tab" data-tab="print" id="tab-print" aria-controls="panel-print">標準回答集の印刷</button>
   <button type="button" class="tab" role="tab" data-tab="data" id="tab-data" aria-controls="panel-data">設定・データ</button>
 </nav>
 
@@ -176,6 +177,21 @@
   <div id="search-results"></div>
 </section>
 
+<section class="panel" id="panel-print" role="tabpanel" aria-labelledby="tab-print" hidden>
+  <h2>「窓口対応 標準回答集」の印刷</h2>
+  <p class="help">台帳を分類ごとにまとめ、根拠と最終更新日を付けてA4で印刷します。窓口や電話の近くに置く控えに使えます。印刷の画面で「PDFに保存」を選ぶと、PDFにもできます。</p>
+  <div class="card">
+    <div class="grid-2">
+      <label>表題<input id="print-title" value="窓口対応 標準回答集"></label>
+      <label>大分類<select id="print-major"><option value="">すべての大分類</option></select></label>
+    </div>
+    <label class="inline"><input type="checkbox" id="print-flags" checked> 確認の印（ばらつき・根拠なし）も載せる</label>
+    <div class="btn-row" style="margin-top:10px"><button type="button" id="btn-print" class="btn-primary">印刷する</button></div>
+  </div>
+  <h3>印刷の見本</h3>
+  <div id="print-preview" class="sheet"></div>
+</section>
+
 <section class="panel" id="panel-data" role="tabpanel" aria-labelledby="tab-data" hidden>
   <h2>設定・データ</h2>
   <p id="data-summary" class="count"></p>
@@ -237,6 +253,7 @@
 </section>
 </main>
 
+<div id="print-area" class="sheet" aria-hidden="true"></div>
 <div id="notice" class="notice" role="status" aria-live="polite"></div>
 
 <script src="js/normalize.js?v=20261105-1"></script>
@@ -251,6 +268,7 @@
 <script src="js/compose.js?v=20261105-1"></script>
 <script src="js/llm.js?v=20261105-1"></script>
 <script src="js/sample-data.js?v=20261105-1"></script>
+<script src="js/print.js?v=20261105-1"></script>
 <script src="js/ledger.js?v=20261105-1"></script>
 <script src="js/io.js?v=20261105-1"></script>
 <script src="js/app.js?v=20261105-1"></script>
