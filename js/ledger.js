@@ -123,6 +123,17 @@
     return parts.join('　');
   }
 
+  function variantsHtml(e) {
+    if (!MK.analysis) return '';
+    var v = MK.analysis.variants(e);
+    if (!v.length) return '';
+    return '<details class="variants"><summary>同じ小分類の、内容の違う回答（' + v.length + '件）を比べる</summary>' +
+      v.map(function (x) {
+        return '<div class="basis-quote">' + esc(x.answer) + '<br><span class="muted">根拠：' + esc(basisText(x) || '（未記入）') +
+          '　担当：' + esc(x.kakari || '—') + '　更新：' + esc(ui.fmtDate(x.updated) || '—') + '</span></div>';
+      }).join('') + '</details>';
+  }
+
   function render() {
     updateDatalists();
     var q = MK.norm.splitTerms(ui.$('#ledger-filter-text').value).map(MK.norm.normalizeQueryTerm);
@@ -173,6 +184,7 @@
         '<div><dt>担当の係</dt><dd>' + esc(e.kakari || '—') + '</dd></div>' +
         '<div><dt>最終更新日</dt><dd>' + esc(ui.fmtDate(e.updated) || '—') + '</dd></div>' +
         '</dl>' +
+        variantsHtml(e) +
         '<div class="entry-actions"><button type="button" class="btn-small" data-act="edit">修正</button>' +
         '<button type="button" class="btn-small" data-act="copy">複製して登録</button></div>' +
         '</article>';
