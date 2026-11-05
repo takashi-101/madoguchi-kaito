@@ -15,6 +15,7 @@
 
 <nav class="tabs" role="tablist" aria-label="画面の切り替え">
   <!--TABS-->
+  <button type="button" class="tab" role="tab" data-tab="compose" id="tab-compose" aria-controls="panel-compose">回答の作成</button>
   <button type="button" class="tab" role="tab" data-tab="ledger" id="tab-ledger" aria-controls="panel-ledger">標準回答台帳</button>
   <button type="button" class="tab" role="tab" data-tab="docs" id="tab-docs" aria-controls="panel-docs">マニュアル・例規の検索</button>
   <button type="button" class="tab" role="tab" data-tab="data" id="tab-data" aria-controls="panel-data">設定・データ</button>
@@ -24,6 +25,48 @@
 
 <main>
 <!--PANELS-->
+<section class="panel" id="panel-compose" role="tabpanel" aria-labelledby="tab-compose" hidden>
+  <h2>回答の作成</h2>
+  <p class="help">問い合わせの内容を入れると、台帳の標準回答と、マニュアル・例規の原文の該当箇所を並べます。回答の根拠は常に原文です。</p>
+  <form id="compose-form" class="card" autocomplete="off">
+    <label>問い合わせの内容<textarea id="compose-inquiry" rows="4" autocomplete="off" placeholder="例：住民票の写しを代理人が取りに行く場合、委任状は必要ですか。"></textarea></label>
+    <p class="privacy">この欄と回答欄の中身はブラウザに保存しません（画面を閉じると消えます）。氏名・住所など個人を特定できる情報は、できるだけ入れないでください。</p>
+    <div class="btn-row">
+      <button type="submit" class="btn-primary">台帳と原文を探す</button>
+      <button type="button" id="btn-compose-clear">消去</button>
+    </div>
+  </form>
+
+  <div id="compose-results" hidden>
+    <div class="card">
+      <div class="search-bar">
+        <label>検索語（問い合わせから拾った語。直して「探し直す」を押せます）<input id="compose-terms" type="search" autocomplete="off"></label>
+        <button type="button" id="btn-compose-research">探し直す</button>
+      </div>
+    </div>
+    <div class="compose-grid">
+      <div>
+        <h3 class="col-title">台帳の標準回答 <span id="compose-ledger-count" class="muted"></span></h3>
+        <div id="compose-ledger"></div>
+      </div>
+      <div>
+        <h3 class="col-title">原文の該当箇所 <span id="compose-passage-count" class="muted"></span></h3>
+        <div id="compose-passages"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>回答の組み立て</h3>
+    <label>回答（標準回答や原文を入れて、言葉を整えてください）<textarea id="compose-answer" rows="7" autocomplete="off"></textarea></label>
+    <div class="btn-row">
+      <button type="button" id="btn-compose-copy">回答をコピー</button>
+      <button type="button" id="btn-compose-register">この回答を台帳に登録する</button>
+    </div>
+  </div>
+  <!--LLM-->
+</section>
+
 
 <section class="panel" id="panel-ledger" role="tabpanel" aria-labelledby="tab-ledger" hidden>
   <div class="panel-head">
@@ -146,6 +189,8 @@
 <script src="js/docparse.js?v=20261105-1"></script>
 <script src="js/search.js?v=20261105-1"></script>
 <script src="js/docs.js?v=20261105-1"></script>
+<script src="js/analysis.js?v=20261105-1"></script>
+<script src="js/compose.js?v=20261105-1"></script>
 <script src="js/ledger.js?v=20261105-1"></script>
 <script src="js/io.js?v=20261105-1"></script>
 <script src="js/app.js?v=20261105-1"></script>
