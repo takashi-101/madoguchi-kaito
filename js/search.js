@@ -60,6 +60,10 @@
     res.docFound = true;
     res.docs = docs.map(function (d) { return d.doc; });
     var sec = MK.norm.normalize(entry.basisSection || '');
+    var secParts = MK.norm.splitTerms(entry.basisSection || '').map(MK.norm.normalize).filter(Boolean);
+    var secOk = function (bk) {
+      return secParts.every(function (sp) { return bk.nh.indexOf(sp) >= 0 || (bk.b.head && bk.norm.indexOf(sp) >= 0); });
+    };
     var page = String(entry.basisPage || '').normalize('NFKC').replace(/[^0-9\-–〜~]/g, '');
     var pageFrom = null, pageTo = null;
     if (page) {
@@ -71,7 +75,7 @@
     var candidate = [];
     docs.forEach(function (d) {
       d.blocks.forEach(function (bk) {
-        var okSec = !sec || bk.nh.indexOf(sec) >= 0 || (bk.b.head && bk.norm.indexOf(sec) >= 0);
+        var okSec = !sec || secOk(bk);
         var okPage = pageFrom == null || bk.b.p == null || (bk.b.p >= pageFrom && bk.b.p <= pageTo);
         var inPage = pageFrom != null && bk.b.p != null && bk.b.p >= pageFrom && bk.b.p <= pageTo;
         if (sec && okSec) secHit = true;
