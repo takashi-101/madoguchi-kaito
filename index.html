@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>窓口・庁内問い合わせ 回答標準化ツール</title>
+<link rel="stylesheet" href="css/style.css?v=20261105-1">
+</head>
+<body>
+<header class="app-header">
+  <h1>窓口・庁内問い合わせ 回答標準化ツール</h1>
+  <p class="app-sub">マニュアル・例規の原文を根拠に、誰が答えても同じ回答にするための標準回答の台帳です。入力したデータはこのブラウザの中だけに保存されます。</p>
+</header>
+
+<nav class="tabs" role="tablist" aria-label="画面の切り替え">
+  <!--TABS-->
+  <button type="button" class="tab" role="tab" data-tab="ledger" id="tab-ledger" aria-controls="panel-ledger">標準回答台帳</button>
+  <button type="button" class="tab" role="tab" data-tab="data" id="tab-data" aria-controls="panel-data">設定・データ</button>
+</nav>
+
+<p id="storage-warning" class="warn-box" hidden>このブラウザではデータを保存できない設定になっています（プライベートウィンドウ等）。画面を閉じると台帳と文書は消えます。作業の終わりに「設定・データ」から書き出してください。</p>
+
+<main>
+<!--PANELS-->
+
+<section class="panel" id="panel-ledger" role="tabpanel" aria-labelledby="tab-ledger" hidden>
+  <div class="panel-head">
+    <h2>標準回答台帳</h2>
+    <button type="button" id="btn-entry-new" class="btn-primary">新規登録</button>
+  </div>
+  <p class="help">問い合わせの分類ごとに、標準回答と根拠（マニュアル・例規の名前と章・ページ）を登録します。小分類は「一つの答えになる単位」で付けてください（例：住民票の写し 手数料）。同じ小分類に内容の違う回答があると「回答がばらついています」の印が付きます。</p>
+
+  <form id="ledger-form" class="card form" hidden autocomplete="off">
+    <h3 id="ledger-form-title">標準回答の新規登録</h3>
+    <div class="grid-2">
+      <label>大分類<input id="f-major" list="dl-major" placeholder="例：住民記録・証明"></label>
+      <label>小分類 <span class="req">必須</span><input id="f-minor" list="dl-minor" placeholder="例：住民票の写し 手数料" required></label>
+    </div>
+    <label>よくある問い合わせ<textarea id="f-question" rows="2" placeholder="例：住民票の写しは1通いくらですか。"></textarea></label>
+    <label>標準回答 <span class="req">必須</span><textarea id="f-answer" rows="4" required></textarea></label>
+    <fieldset>
+      <legend>根拠（マニュアル・例規）</legend>
+      <div class="grid-3">
+        <label>文書名<input id="f-basis-doc" list="dl-doc" placeholder="例：住民窓口事務取扱マニュアル"></label>
+        <label>章・条・見出し<input id="f-basis-section" placeholder="例：第2章 / 第3条"></label>
+        <label>ページ<input id="f-basis-page" inputmode="numeric" placeholder="例：5"></label>
+      </div>
+      <label>根拠の該当文言（任意。原文の中にあるかを確かめます）<input id="f-basis-quote" placeholder="例：1通につき300円"></label>
+    </fieldset>
+    <div class="grid-2">
+      <label>担当の係<input id="f-kakari" list="dl-kakari" placeholder="例：住民課 住民記録係"></label>
+      <label>最終更新日<input id="f-updated" type="date"></label>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn-primary">台帳に登録</button>
+      <button type="button" id="btn-entry-cancel">取消</button>
+      <button type="button" id="btn-entry-delete" class="btn-danger" hidden>削除</button>
+    </div>
+  </form>
+
+  <div class="filter-bar">
+    <label class="grow">絞り込み<input id="ledger-filter-text" type="search" placeholder="語句（スペースで区切ると全部を含むもの）"></label>
+    <label>大分類<select id="ledger-filter-major"><option value="">すべての大分類</option></select></label>
+    <label>印<select id="ledger-filter-flag">
+      <option value="">すべて</option>
+      <option value="any">印のあるもの</option>
+      <option value="vary">回答がばらついている</option>
+      <option value="nobasis">根拠がない・見つからない</option>
+    </select></label>
+  </div>
+  <p id="ledger-count" class="count"></p>
+  <div id="ledger-list"></div>
+  <datalist id="dl-major"></datalist><datalist id="dl-minor"></datalist>
+  <datalist id="dl-kakari"></datalist><datalist id="dl-doc"></datalist>
+</section>
+
+<section class="panel" id="panel-data" role="tabpanel" aria-labelledby="tab-data" hidden>
+  <h2>設定・データ</h2>
+  <p id="data-summary" class="count"></p>
+  <!--SETTINGS-->
+  <div class="card">
+    <h3>書き出し</h3>
+    <p class="help">控えや、他の職員・他のPCへの受け渡しに使います。CSVはExcelでそのまま開けます。</p>
+    <div class="btn-row">
+      <button type="button" id="btn-export-json">台帳を書き出す（JSON）</button>
+      <button type="button" id="btn-export-json-all">台帳と文書をまとめて書き出す（JSON）</button>
+      <button type="button" id="btn-export-csv">台帳を書き出す（CSV・Excel用）</button>
+    </div>
+  </div>
+  <div class="card">
+    <h3>読み込み</h3>
+    <p class="help">「置き換え」は今の内容をファイルの内容で置き換えます。「追加の取り込み」は今の内容に足します。同じ内容のものは取り込まず、件数をお知らせします。</p>
+    <div class="btn-row">
+      <button type="button" id="btn-import-replace">読み込む（置き換え）</button>
+      <button type="button" id="btn-import-merge">追加で取り込む</button>
+      <input type="file" id="file-import-json" accept=".json,application/json" hidden>
+    </div>
+    <p id="data-result" class="result" aria-live="polite"></p>
+  </div>
+  <!--SAMPLE-->
+  <div class="card">
+    <h3>消去</h3>
+    <p class="help">このPCを他の業務に回すときなどに使います。</p>
+    <button type="button" id="btn-clear-all" class="btn-danger">台帳と文書をすべて消去</button>
+  </div>
+</section>
+</main>
+
+<div id="notice" class="notice" role="status" aria-live="polite"></div>
+
+<script src="js/normalize.js?v=20261105-1"></script>
+<script src="js/storage.js?v=20261105-1"></script>
+<script src="js/state.js?v=20261105-1"></script>
+<script src="js/ui.js?v=20261105-1"></script>
+<!--SCRIPTS-->
+<script src="js/ledger.js?v=20261105-1"></script>
+<script src="js/io.js?v=20261105-1"></script>
+<script src="js/app.js?v=20261105-1"></script>
+</body>
+</html>
