@@ -16,6 +16,7 @@
 <nav class="tabs" role="tablist" aria-label="画面の切り替え">
   <!--TABS-->
   <button type="button" class="tab" role="tab" data-tab="ledger" id="tab-ledger" aria-controls="panel-ledger">標準回答台帳</button>
+  <button type="button" class="tab" role="tab" data-tab="docs" id="tab-docs" aria-controls="panel-docs">マニュアル・例規の検索</button>
   <button type="button" class="tab" role="tab" data-tab="data" id="tab-data" aria-controls="panel-data">設定・データ</button>
 </nav>
 
@@ -75,6 +76,34 @@
   <datalist id="dl-kakari"></datalist><datalist id="dl-doc"></datalist>
 </section>
 
+<section class="panel" id="panel-docs" role="tabpanel" aria-labelledby="tab-docs" hidden>
+  <h2>マニュアル・例規の取り込みと全文検索</h2>
+  <p class="help">事務マニュアル、条例・規則・要綱などのファイルを取り込むと、全文を語句で検索できます。結果には原文と、文書名・章（見出し）・ページを並べます。当てはまる箇所はすべて表示します。全角・半角、ひらがな・カタカナ、送り仮名の一部（申込み／申し込み など）の違いは同じものとして探します。</p>
+  <div class="card">
+    <h3>文書の取り込み</h3>
+    <div id="dropzone" class="dropzone">
+      <p>ここにファイルを落としてください（複数可）</p>
+      <p class="help">テキスト（.txt）、HTML（.html）、文字を選べるPDF（.pdf）。紙をスキャンしただけのPDFは取り込めません。</p>
+      <button type="button" id="btn-pick-docs">ファイルを選ぶ</button>
+      <input type="file" id="file-docs" accept=".txt,.text,.md,.html,.htm,.pdf,text/plain,text/html,application/pdf" multiple hidden>
+    </div>
+    <p id="import-status" class="result" aria-live="polite" style="white-space:pre-wrap"></p>
+    <p id="doc-count" class="count"></p>
+    <ul id="doc-list" class="doc-list"></ul>
+  </div>
+  <form id="search-form" class="card" role="search">
+    <h3>全文検索</h3>
+    <div class="search-bar">
+      <label>語句（スペースで区切ると複数の語）<input id="search-q" type="search" placeholder="例：住民票 手数料"></label>
+      <label style="flex:0 1 200px">探し方<select id="search-mode"><option value="all">すべての語を含む箇所</option><option value="any">いずれかの語を含む箇所</option></select></label>
+      <label style="flex:0 1 220px">文書<select id="search-doc"><option value="">すべての文書</option></select></label>
+      <button type="submit" class="btn-primary">検索</button>
+    </div>
+  </form>
+  <p id="search-summary" class="count" aria-live="polite"></p>
+  <div id="search-results"></div>
+</section>
+
 <section class="panel" id="panel-data" role="tabpanel" aria-labelledby="tab-data" hidden>
   <h2>設定・データ</h2>
   <p id="data-summary" class="count"></p>
@@ -114,6 +143,9 @@
 <script src="js/state.js?v=20261105-1"></script>
 <script src="js/ui.js?v=20261105-1"></script>
 <!--SCRIPTS-->
+<script src="js/docparse.js?v=20261105-1"></script>
+<script src="js/search.js?v=20261105-1"></script>
+<script src="js/docs.js?v=20261105-1"></script>
 <script src="js/ledger.js?v=20261105-1"></script>
 <script src="js/io.js?v=20261105-1"></script>
 <script src="js/app.js?v=20261105-1"></script>
