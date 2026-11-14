@@ -188,3 +188,11 @@ node test/run-all.js
 - PDFは `isEvalSupported: false` の設定で読み込んでいます。
 
 このツール本体のライセンスは MIT です（`LICENSE`）。
+
+## 根拠（学習）
+
+| 機能 | 裏付けになる学習（発行元・名称・発行日） | 照会先（Credly） |
+|---|---|---|
+| 原文の該当箇所を根拠に回答を組み立てる（全文検索） | Coursera（認定：IBM）「Build RAG Applications: Get Started」2026年11月1日 | https://www.credly.com/badges/68c65890-a24d-4251-afe3-0dae3f03ed15 |
+| AI（Ollama）による回答の下書き候補 | Coursera（認定：IBM）「Develop Generative AI Applications: Get Started」2026年11月1日 | https://www.credly.com/badges/b0634d1e-bbc1-4355-98eb-2094f43b8fee |
+| データがPCの外に出ない作り | Amazon Web Services Training and Certification「AWS Knowledge: Security Champion - Training Badge」2025年11月10日 | https://www.credly.com/badges/ddab077d-58eb-4807-bec1-69e5c6aeb9a5 |
