@@ -1,0 +1,11 @@
+{
+  "name": "madoguchi-kaito",
+  "private": true,
+  "description": "窓口回答標準化ツールの画面テスト（Playwright）",
+  "scripts": {
+    "test": "node test/run-all.js"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}

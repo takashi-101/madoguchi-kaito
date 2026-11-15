@@ -169,10 +169,12 @@ foreach ($f in 'index.html','js/docparse.js') { (Get-Content $f -Encoding UTF8) 
 
 ## テスト
 
-`test` フォルダにテストがあります。Node.js と Playwright（Chromium）が入った環境で、次のコマンドで実行します。
+`test` フォルダにテストがあります。Node.js が入った環境で、次のコマンドで実行します（Playwright の版は `package.json` で固定しています）。
 
 ```bash
-node test/run-all.js
+npm install
+npx playwright install chromium
+npm test
 ```
 
 各テストは、GitHub Pages と同じ形（`/madoguchi-kaito/` の下に置いた静的配信）と、`index.html` をファイルとして開いた形の両方で確かめます。Ollama と外部のAPIは、応答の形をまねた仮の応答で確かめています。
