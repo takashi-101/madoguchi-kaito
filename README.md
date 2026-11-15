@@ -195,6 +195,6 @@ node test/run-all.js
 |---|---|---|---|
 | 生成AI・LLMの実装（RAG・エージェント・MCP） | 原文の該当箇所を根拠に回答を組み立てる（全文検索） | Coursera（認定：IBM）「Build RAG Applications: Get Started」2026年11月1日 | https://www.credly.com/badges/68c65890-a24d-4251-afe3-0dae3f03ed15 |
 | 生成AI・LLMの実装（RAG・エージェント・MCP） | AI（Ollama）による回答の下書き候補 | Coursera（認定：IBM）「Develop Generative AI Applications: Get Started」2026年11月1日 | https://www.credly.com/badges/b0634d1e-bbc1-4355-98eb-2094f43b8fee |
-| セキュリティ・ガバナンス | データがPCの外に出ない作り | Amazon Web Services Training and Certification「AWS Knowledge: Security Champion - Training Badge」2025年11月10日 | https://www.credly.com/badges/ddab077d-58eb-4807-bec1-69e5c6aeb9a5 |
+| セキュリティ・ガバナンス | 外部への通信が起きないことを、画面の操作ごとにテストで確認（`test/helpers.js` で通信を記録し、`t10`・`t20`・`t30`・`t50` で0件を確認） | Amazon Web Services Training and Certification「AWS Knowledge: Security Champion - Training Badge」2025年11月10日 | https://www.credly.com/badges/ddab077d-58eb-4807-bec1-69e5c6aeb9a5 |
 
 「求められる力」の分け方は、[プロフィール](https://github.com/takashi-101) の「FDE・AXで求められる力と、その根拠」と同じです。
